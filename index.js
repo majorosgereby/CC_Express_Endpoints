@@ -2,6 +2,7 @@ import express from 'express'
 // const express = require("express");
 const app = express();
 
+const port = 8128
 
 //This is an inportant middleware which will make our application to only accept JSON in the request body, and will automatically parse the data as well
 app.use(express.json());
@@ -169,5 +170,6 @@ app.delete("/deleteEmployee/:id", (req, res) => {
 
 //----------------------------------------------------------------------------------------------------------------------------------------
 
-app.listen(3000)
-console.log("App running at port:3000");
+app.listen(port, () => {
+    console.log(`App running at port:${port}`);
+})
