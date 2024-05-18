@@ -1,4 +1,5 @@
-const express = require("express");
+import express from 'express'
+// const express = require("express");
 const app = express();
 
 
@@ -8,10 +9,10 @@ app.use(express.json());
 //Let's have some data we can work with, in this case our data will be an array of employees, with some of their personal data.
 //The goal of our express backend application here is to handle the data stored in this array.
 let employees = [
-    {id:1, name:"Adam England", age:32, email:"Adam.England32@company.com", profession:"Bodyguard"},
-    {id:2, name:"Kate Taylorr", age:45, email:"Kate.Taylor45@company.com", profession:"Secretary"},
-    {id:3, name:"Erwyn Jager", age:28, email:"Erwyn.Jager28@company.com", profession:"Civil Engineer"},
-    {id:4, name:"Abigel Taylor", age:20, email:"Abigel.Toylor20@company.com", profession:"Junior HR manager"}
+    { id: 1, name: "Adam England", age: 32, email: "Adam.England32@company.com", profession: "Bodyguard" },
+    { id: 2, name: "Kate Taylorr", age: 45, email: "Kate.Taylor45@company.com", profession: "Secretary" },
+    { id: 3, name: "Erwyn Jager", age: 28, email: "Erwyn.Jager28@company.com", profession: "Civil Engineer" },
+    { id: 4, name: "Abigel Taylor", age: 20, email: "Abigel.Toylor20@company.com", profession: "Junior HR manager" }
 ]
 
 //Hi, here we will practice the creation of endpoints in Express.js and we will also check how they work.
@@ -33,7 +34,7 @@ let employees = [
 //When someone triggers this endpoint this function will be executed.
 //Now let's check how a get request looks like. 
 //(NOTE: GET requests don't have a "body", meaning that during a GET request the user who triggered this endpoint won't be able to send data in the request body)
-app.get("/getSomeData", (req,res) => {
+app.get("/getSomeData", (req, res) => {
     res.status(200).json(employees);
 })
 //Let's see what we did here, when this endpoint get's triggered we will send back a JSON object which contains the data, and also we send back a status code of 200
@@ -44,16 +45,15 @@ app.get("/getSomeData", (req,res) => {
 //Here we will try to get some data from the URL, this time we will want to get the "id" of the employee of which's data we will want to send back.
 //In this case what ends up happening is that by using the ":" before the "id" in the URL we are telling the backend that at this endpoint's URL what ever is at the place of the "id",
 //we can get it from the URL by the name of id. Please check the code and see how we will do it.
-app.get("/getSpecificEmployee/:id", (req,res) => {
+app.get("/getSpecificEmployee/:id", (req, res) => {
     const requestedId = req.params.id
     let requestedEmployee = employees.find(oneEmployee => oneEmployee.id == requestedId)
 
     if (requestedEmployee != undefined) {
         res.status(200).json(requestedEmployee)
     }
-    else
-    {
-        res.status(404).json({"message":"Employee not found!"})
+    else {
+        res.status(404).json({ "message": "Employee not found!" })
     }
 })
 //From the request object (we call it "req" here) we can get out the id from the params
@@ -66,23 +66,23 @@ app.get("/getSpecificEmployee/:id", (req,res) => {
 //Noticed that the type of this endpoint is POST, meaning that now we can have a body in our request object. 
 //In this example we will expect that the data we will receive, contains all the data we need to be able to register a new employee.
 //We can access the body like this: req.body, here the body is also an object and it can contain many things, let's take a look.
-app.post("/postAddNewEmpolyee",(req,res) => {
+app.post("/postAddNewEmpolyee", (req, res) => {
     const body = req.body
     //TASK FOR YOU: Log the content of the body to the console and inspect what it contains when you are running the fake fetch from the FakeClient.mjs
 
     try {
         let newEmployee = {}
-        newEmployee.id = employees.length+1
+        newEmployee.id = employees.length + 1
         newEmployee.name = body.name
         newEmployee.age = body.age
         newEmployee.email = body.email
         newEmployee.profession = body.profession
 
         employees.push(newEmployee)
-        res.status(201).json({"message":"New employee has been registered!"})
+        res.status(201).json({ "message": "New employee has been registered!" })
     } catch (error) {
         console.log(error);
-        res.status(406).json({"message":"Invalid data has been provided!"})
+        res.status(406).json({ "message": "Invalid data has been provided!" })
     }
 })
 //Please feel free to check the next fakeFetch in the FakeClient.mjs and check where exactly this body comes from.
@@ -92,7 +92,7 @@ app.post("/postAddNewEmpolyee",(req,res) => {
 //We will get data from the params and also from the body.
 //We will get the id of the employee we want to edit from the params and we will get the new data from the body.
 //But one more thing before we start, when do we use PUT? Usually when we are trying to edit/update/extend already existing data in our database. (in our case it's just an array of data)
-app.put("/putEditEmployee/:id",(req,res) => {
+app.put("/putEditEmployee/:id", (req, res) => {
     let body = req.body
 
     try {
@@ -106,10 +106,10 @@ app.put("/putEditEmployee/:id",(req,res) => {
 
             }
         });
-        res.status(201).json({"message":"Edit was successful!"})
+        res.status(201).json({ "message": "Edit was successful!" })
     } catch (error) {
         console.log(error);
-        res.status(406).json({"message":"Edit was unsuccessful!"})
+        res.status(406).json({ "message": "Edit was unsuccessful!" })
     }
 })
 //As you can see, I keep putting my main code inside of a tryCatch, and the reason for it is, that it's a good practice and a standard requirement to be able to handle potential errors
@@ -119,17 +119,17 @@ app.put("/putEditEmployee/:id",(req,res) => {
 
 //Now this leaves us to one more functionality, we learned how we can get data, how we can post data, how we can edit data, now we will check how to delete data.
 //To achive this, we will use a DELETE endpoint, let's see an example.
-app.delete("/deleteEmployee/:id",(req,res) => {
+app.delete("/deleteEmployee/:id", (req, res) => {
     try {
         let newEmployeesArray = employees.filter(oneEmployee =>
             oneEmployee.id != req.params.id
         )
         employees = newEmployeesArray
-        
-        res.status(201).json({"message":`Successfully deleted the employee with id: ${req.params.id}`})
+
+        res.status(201).json({ "message": `Successfully deleted the employee with id: ${req.params.id}` })
     } catch (error) {
         console.log(error);
-        res.status(406).json({"message":"Delete was unsuccessful!"})
+        res.status(406).json({ "message": "Delete was unsuccessful!" })
     }
 })
 //As you can see I simply filter the original array and overwrite it after that, now when we are going to use a real database instead of just an array,
