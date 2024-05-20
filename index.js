@@ -170,6 +170,25 @@ app.delete("/deleteEmployee/:id", (req, res) => {
 
 //----------------------------------------------------------------------------------------------------------------------------------------
 
+
+app.post('/calculate', (req, res) => {
+    // reading the HTTP request properties
+    const requestBody = req.body;
+    const a = requestBody.operandA;
+    const b = requestBody.operandB;
+
+    // doing the buisness logic
+    const result = a + b;
+    const responseBody = {
+        operands: [a, b],
+        result: result
+    };
+
+    console.log(`/calculate a=${a}, b=${b}`)
+    // answering with a HTTP response
+    res.send(responseBody);
+});
+
 app.listen(port, () => {
     console.log(`App running at port:${port}`);
 })
